@@ -13,7 +13,7 @@ class RESIDE(data.Dataset):
         self.train = train
         self.format = format
         self.haze_imgs_dir = os.listdir(os.path.join(path, 'hazy'))
-        self.haze_imgs = [os.path.join(path, 'hazy', img) for img in self.haze_imgs_dir]
+        self.haze_imgs = [os.path.join(path, 'hazy', img) for img in self.haze_imgs_dir if img.endswith('.png')]
         self.clear_dir = os.path.join(path, 'clear')
 
     def __getitem__(self, index):
@@ -35,11 +35,16 @@ class RESIDE(data.Dataset):
         return len(self.haze_imgs)
 
 if trainconfig.ondevice:
-    path = '/Users/vinaynaidu/Desktop/'
+    path = '../datasets/'
 else:
     path = '/kaggle/input/'
 
-if trainconfig.dataset == "residenh":
+if trainconfig.dataset == "master":
+    train_loader = DataLoader(dataset = RESIDE(path + 'MASTER/train', train = True), 
+                                    batch_size = trainconfig.bs, shuffle = True)
+    test_loader = DataLoader(dataset = RESIDE(path + 'MASTER/val', train = False),
+                                    batch_size = 1, shuffle = False)
+elif trainconfig.dataset == "residenh":
     if trainconfig.type == "indoor":
         train_loader = DataLoader(dataset = RESIDE(path + 'residenh/RESIDENH/ITS', train = True), 
                                     batch_size = trainconfig.bs, shuffle = True)
@@ -62,11 +67,25 @@ elif trainconfig.dataset == "reside":
         test_loader = DataLoader(dataset = RESIDE(path + 'resideh/RESIDE/SOTS/outdoor', train = False), 
                                     batch_size = 1, shuffle = False)
 elif trainconfig.dataset == "nhhaze":
-        train_loader = DataLoader(dataset = RESIDE(path + 'nhhaze/NH-HAZE/NH-HAZE', train = True), 
+        train_loader = DataLoader(dataset = RESIDE(path + 'NH-HAZE/train', train = True), 
                                     batch_size = trainconfig.bs, shuffle = True)
-        test_loader = DataLoader(dataset = RESIDE(path + 'nhhaze/NH-HAZE/NH-HAZE-VAL', train = False),
+        test_loader = DataLoader(dataset = RESIDE(path + 'NH-HAZE/val', train = False),
                                     batch_size = 1, shuffle = False)
-
+elif trainconfig.dataset == "ihaze":
+        train_loader = DataLoader(dataset = RESIDE(path + 'I-HAZE/train', train = True), 
+                                    batch_size = trainconfig.bs, shuffle = True)
+        test_loader = DataLoader(dataset = RESIDE(path + 'I-HAZE/val', train = False),
+                                    batch_size = 1, shuffle = False)
+elif trainconfig.dataset == "ohaze":
+        train_loader = DataLoader(dataset = RESIDE(path + 'O-HAZE/train', train = True), 
+                                    batch_size = trainconfig.bs, shuffle = True)
+        test_loader = DataLoader(dataset = RESIDE(path + 'O-HAZE/val', train = False),
+                                    batch_size = 1, shuffle = False)
+elif trainconfig.dataset == "dhaze":
+        train_loader = DataLoader(dataset = RESIDE(path + 'DENSE-HAZE/train', train = True), 
+                                    batch_size = trainconfig.bs, shuffle = True)
+        test_loader = DataLoader(dataset = RESIDE(path + 'DENSE-HAZE/val', train = False),
+                                    batch_size = 1, shuffle = False)
 if __name__ == '__main__':
     pass
         
