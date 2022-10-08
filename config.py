@@ -11,7 +11,7 @@ parser.add_argument('--eval_step', type = int, default = 100)
 parser.add_argument('--lr', default = 0.0005, type = float, help = 'learning rate')
 parser.add_argument('--dataset', type = str, default = 'nhhaze')
 parser.add_argument('--type', type = str, default = 'both')
-parser.add_argument('--bs', type = int, default = 58, help = 'batch size')
+parser.add_argument('--bs', type = int, default = 10, help = 'batch size')
 parser.add_argument('--ondevice', type = bool, default = False, help = 'to test training on device')
 parser.add_argument('--pretrain', type = bool, default = False)
 
